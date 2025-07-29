@@ -38,8 +38,14 @@ import {
   CheckCircle,
   AlertTriangle,
   Info,
+  Moon,
+  Sun,
+  Sparkles,
+  Users,
+  Trophy,
+  Target,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [obverseImage, setObverseImage] = useState(null);
@@ -49,6 +55,32 @@ export default function Home() {
   const [coinDetails, setCoinDetails] = useState("");
   const [selectedCoinType, setSelectedCoinType] = useState("");
   const [gradingResults, setGradingResults] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Initialize dark mode from localStorage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("darkMode");
+    if (savedTheme) {
+      setDarkMode(JSON.parse(savedTheme));
+    } else {
+      // Check system preference
+      setDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }, []);
+
+  // Apply dark mode to document
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   // Mock grading results for demonstration
   const mockResults = {
@@ -99,51 +131,101 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 transition-colors duration-300">
       <div className="container mx-auto max-w-6xl">
+        {/* Navigation Bar */}
+        <nav className="flex justify-between items-center py-6 mb-6">
+          <div className="flex items-center gap-2">
+            <Award className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+            <span className="text-2xl font-bold text-slate-900 dark:text-white">CoinGrader</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Badge variant="outline" className="hidden md:flex">
+              <Sparkles className="h-3 w-3 mr-1" />
+              AI-Powered
+            </Badge>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleDarkMode}
+              className="p-2"
+            >
+              {darkMode ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+        </nav>
         {/* Header with Stats */}
         <header className="text-center py-12">
           <div className="flex justify-center items-center gap-2 mb-4">
-            <Award className="h-8 w-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-slate-900">CoinGrader</h1>
+            <div className="relative">
+              <Award className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+              CoinGrader
+            </h1>
           </div>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-8">
             Professional AI-powered coin grading. Upload your coin images and
             get accurate, professional grades using advanced computer vision
             technology.
           </p>
-
-          {/* Stats Row */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">50K+</div>
-              <div className="text-sm text-slate-500">Coins Graded</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">98%</div>
-              <div className="text-sm text-slate-500">Accuracy Rate</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">2.5s</div>
-              <div className="text-sm text-slate-500">Avg. Analysis Time</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600">24/7</div>
-              <div className="text-sm text-slate-500">Available</div>
-            </div>
+          
+          {/* Enhanced Stats Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-700">
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 flex items-center justify-center gap-1">
+                  <Users className="h-5 w-5" />
+                  50K+
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Coins Graded</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-700">
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400 flex items-center justify-center gap-1">
+                  <Target className="h-5 w-5" />
+                  98%
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Accuracy Rate</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-700">
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 flex items-center justify-center gap-1">
+                  <Zap className="h-5 w-5" />
+                  2.5s
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Avg. Analysis Time</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-orange-200 dark:border-orange-700">
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400 flex items-center justify-center gap-1">
+                  <Clock className="h-5 w-5" />
+                  24/7
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Available</div>
+              </CardContent>
+            </Card>
           </div>
         </header>
 
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
           {/* Upload Section */}
-          <Card className="border-2 border-dashed border-slate-300 hover:border-slate-400 transition-colors">
+          <Card className="border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500 transition-colors bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
                 <Upload className="h-5 w-5" />
                 Upload Coin Images
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-slate-600 dark:text-slate-400">
                 Upload clear, high-resolution images of both sides of your coin
                 for the most accurate grading.
               </CardDescription>
@@ -151,12 +233,12 @@ export default function Home() {
             <CardContent className="space-y-6">
               {/* Coin Type Selection */}
               <div className="space-y-2">
-                <Label htmlFor="coin-type">Coin Type</Label>
+                <Label htmlFor="coin-type" className="text-slate-700 dark:text-slate-300">Coin Type</Label>
                 <Select
                   value={selectedCoinType}
                   onValueChange={setSelectedCoinType}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600">
                     <SelectValue placeholder="Select coin type (optional)" />
                   </SelectTrigger>
                   <SelectContent>
@@ -174,9 +256,9 @@ export default function Home() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="obverse">Obverse (Front)</Label>
+                  <Label htmlFor="obverse" className="text-slate-700 dark:text-slate-300">Obverse (Front)</Label>
                   <div
-                    className="border-2 border-dashed border-slate-200 rounded-lg p-8 text-center hover:border-slate-300 transition-colors cursor-pointer relative overflow-hidden"
+                    className="border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-lg p-8 text-center hover:border-slate-300 dark:hover:border-slate-500 transition-colors cursor-pointer relative overflow-hidden bg-slate-50 dark:bg-slate-700/50"
                     onClick={() =>
                       document.getElementById("obverse-input").click()
                     }
@@ -189,15 +271,15 @@ export default function Home() {
                           alt="Obverse"
                           className="w-full h-32 object-cover rounded"
                         />
-                        <Badge className="absolute top-2 right-2 bg-green-500">
+                        <Badge className="absolute top-2 right-2 bg-green-500 hover:bg-green-600">
                           <CheckCircle className="h-3 w-3 mr-1" />
                           Uploaded
                         </Badge>
                       </div>
                     ) : (
                       <>
-                        <Camera className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-                        <p className="text-sm text-slate-500">
+                        <Camera className="h-8 w-8 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
                           Click to upload front side
                         </p>
                       </>
@@ -214,9 +296,9 @@ export default function Home() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="reverse">Reverse (Back)</Label>
+                  <Label htmlFor="reverse" className="text-slate-700 dark:text-slate-300">Reverse (Back)</Label>
                   <div
-                    className="border-2 border-dashed border-slate-200 rounded-lg p-8 text-center hover:border-slate-300 transition-colors cursor-pointer relative overflow-hidden"
+                    className="border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-lg p-8 text-center hover:border-slate-300 dark:hover:border-slate-500 transition-colors cursor-pointer relative overflow-hidden bg-slate-50 dark:bg-slate-700/50"
                     onClick={() =>
                       document.getElementById("reverse-input").click()
                     }
@@ -229,15 +311,15 @@ export default function Home() {
                           alt="Reverse"
                           className="w-full h-32 object-cover rounded"
                         />
-                        <Badge className="absolute top-2 right-2 bg-green-500">
+                        <Badge className="absolute top-2 right-2 bg-green-500 hover:bg-green-600">
                           <CheckCircle className="h-3 w-3 mr-1" />
                           Uploaded
                         </Badge>
                       </div>
                     ) : (
                       <>
-                        <Camera className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-                        <p className="text-sm text-slate-500">
+                        <Camera className="h-8 w-8 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
                           Click to upload back side
                         </p>
                       </>
@@ -256,11 +338,11 @@ export default function Home() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="coin-details">Coin Details (Optional)</Label>
+                <Label htmlFor="coin-details" className="text-slate-700 dark:text-slate-300">Coin Details (Optional)</Label>
                 <Textarea
                   id="coin-details"
                   placeholder="Enter any additional information about your coin (year, mint mark, denomination, etc.)"
-                  className="resize-none"
+                  className="resize-none bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400"
                   value={coinDetails}
                   onChange={(e) => setCoinDetails(e.target.value)}
                 />
@@ -270,10 +352,10 @@ export default function Home() {
               {isAnalyzing && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                       Analyzing your coin...
                     </span>
-                    <span className="text-sm text-slate-500">
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
                       {analysisProgress}%
                     </span>
                   </div>
@@ -282,7 +364,7 @@ export default function Home() {
               )}
 
               <Button
-                className="w-full"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
                 size="lg"
                 onClick={simulateAnalysis}
                 disabled={isAnalyzing || (!obverseImage && !reverseImage)}
@@ -294,16 +376,16 @@ export default function Home() {
                   </>
                 ) : (
                   <>
-                    <Zap className="h-4 w-4 mr-2" />
+                    <Sparkles className="h-4 w-4 mr-2" />
                     Grade My Coin
                   </>
                 )}
               </Button>
 
               {/* Upload Tips */}
-              <Alert>
-                <Info className="h-4 w-4" />
-                <AlertDescription>
+              <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <AlertDescription className="text-blue-800 dark:text-blue-200">
                   <strong>Pro Tips:</strong> Use good lighting, avoid shadows,
                   and ensure the entire coin is visible for best results.
                 </AlertDescription>
@@ -312,46 +394,46 @@ export default function Home() {
           </Card>
 
           {/* Results Section */}
-          <Card>
+          <Card className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
                 <Star className="h-5 w-5" />
                 Grading Results
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-slate-600 dark:text-slate-400">
                 Your coin grading results will appear here after analysis.
               </CardDescription>
             </CardHeader>
             <CardContent>
               {gradingResults ? (
                 <Tabs defaultValue="overview" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="details">Details</TabsTrigger>
-                    <TabsTrigger value="market">Market Info</TabsTrigger>
+                  <TabsList className="grid w-full grid-cols-3 bg-slate-100 dark:bg-slate-700">
+                    <TabsTrigger value="overview" className="dark:data-[state=active]:bg-slate-600">Overview</TabsTrigger>
+                    <TabsTrigger value="details" className="dark:data-[state=active]:bg-slate-600">Details</TabsTrigger>
+                    <TabsTrigger value="market" className="dark:data-[state=active]:bg-slate-600">Market Info</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="overview" className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center p-4 bg-blue-50 rounded-lg">
-                        <div className="text-3xl font-bold text-blue-600 mb-1">
+                      <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
                           {gradingResults.overallGrade}
                         </div>
-                        <div className="text-sm text-slate-600">
+                        <div className="text-sm text-slate-600 dark:text-slate-400">
                           Overall Grade
                         </div>
                       </div>
-                      <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <div className="text-3xl font-bold text-green-600 mb-1">
+                      <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-lg border border-green-200 dark:border-green-700">
+                        <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-1">
                           {gradingResults.confidence}%
                         </div>
-                        <div className="text-sm text-slate-600">Confidence</div>
+                        <div className="text-sm text-slate-600 dark:text-slate-400">Confidence</div>
                       </div>
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm font-medium">Grade Score</span>
-                        <span className="text-sm text-slate-500">
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Grade Score</span>
+                        <span className="text-sm text-slate-500 dark:text-slate-400">
                           {gradingResults.gradeScore}/100
                         </span>
                       </div>
@@ -360,9 +442,9 @@ export default function Home() {
                         className="w-full"
                       />
                     </div>
-                    <Alert>
-                      <CheckCircle className="h-4 w-4" />
-                      <AlertDescription>
+                    <Alert className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
+                      <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      <AlertDescription className="text-green-800 dark:text-green-200">
                         {gradingResults.certificationRecommendation}
                       </AlertDescription>
                     </Alert>
@@ -374,12 +456,12 @@ export default function Home() {
                         ([key, value]) => (
                           <div
                             key={key}
-                            className="flex justify-between items-center p-3 bg-slate-50 rounded"
+                            className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded border border-slate-200 dark:border-slate-600"
                           >
-                            <span className="capitalize font-medium">
+                            <span className="capitalize font-medium text-slate-700 dark:text-slate-300">
                               {key}:
                             </span>
-                            <Badge variant="outline">{value}</Badge>
+                            <Badge variant="outline" className="border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">{value}</Badge>
                           </div>
                         )
                       )}
@@ -388,15 +470,15 @@ export default function Home() {
 
                   <TabsContent value="market" className="space-y-4">
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">Estimated Value:</span>
-                        <span className="text-lg font-bold text-green-600">
+                      <div className="flex justify-between items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg border border-green-200 dark:border-green-700">
+                        <span className="font-medium text-slate-700 dark:text-slate-300">Estimated Value:</span>
+                        <span className="text-lg font-bold text-green-600 dark:text-green-400">
                           {gradingResults.marketValue}
                         </span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">Rarity:</span>
-                        <Badge variant="secondary">
+                      <div className="flex justify-between items-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
+                        <span className="font-medium text-slate-700 dark:text-slate-300">Rarity:</span>
+                        <Badge variant="secondary" className="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300">
                           {gradingResults.rarity}
                         </Badge>
                       </div>
@@ -404,9 +486,9 @@ export default function Home() {
                   </TabsContent>
                 </Tabs>
               ) : (
-                <div className="text-center py-12 text-slate-400">
+                <div className="text-center py-12 text-slate-400 dark:text-slate-500">
                   <Star className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                  <p className="text-lg font-medium mb-2">
+                  <p className="text-lg font-medium mb-2 text-slate-600 dark:text-slate-400">
                     No coin analyzed yet
                   </p>
                   <p className="text-sm">Upload coin images to get started</p>
@@ -418,117 +500,117 @@ export default function Home() {
 
         {/* Enhanced Features Section */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Eye className="h-5 w-5 text-blue-500" />
+              <CardTitle className="text-lg flex items-center gap-2 text-slate-900 dark:text-white">
+                <Eye className="h-5 w-5 text-blue-500 dark:text-blue-400" />
                 AI-Powered Analysis
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-600 mb-4">
+              <p className="text-slate-600 dark:text-slate-300 mb-4">
                 Advanced computer vision analyzes surface condition, strike
                 quality, and overall preservation.
               </p>
               <div className="space-y-2">
-                <Badge variant="outline" className="mr-2">
+                <Badge variant="outline" className="mr-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">
                   Computer Vision
                 </Badge>
-                <Badge variant="outline" className="mr-2">
+                <Badge variant="outline" className="mr-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">
                   Deep Learning
                 </Badge>
-                <Badge variant="outline">Neural Networks</Badge>
+                <Badge variant="outline" className="border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">Neural Networks</Badge>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Shield className="h-5 w-5 text-green-500" />
+              <CardTitle className="text-lg flex items-center gap-2 text-slate-900 dark:text-white">
+                <Shield className="h-5 w-5 text-green-500 dark:text-green-400" />
                 Professional Standards
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-600 mb-4">
+              <p className="text-slate-600 dark:text-slate-300 mb-4">
                 Grades follow industry-standard scales including Sheldon,
                 European, and other recognized systems.
               </p>
               <div className="space-y-2">
-                <Badge variant="outline" className="mr-2">
+                <Badge variant="outline" className="mr-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">
                   Sheldon Scale
                 </Badge>
-                <Badge variant="outline" className="mr-2">
+                <Badge variant="outline" className="mr-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">
                   PCGS Standards
                 </Badge>
-                <Badge variant="outline">NGC Compatible</Badge>
+                <Badge variant="outline" className="border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">NGC Compatible</Badge>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Zap className="h-5 w-5 text-yellow-500" />
+              <CardTitle className="text-lg flex items-center gap-2 text-slate-900 dark:text-white">
+                <Zap className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />
                 Instant Results
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-600 mb-4">
+              <p className="text-slate-600 dark:text-slate-300 mb-4">
                 Get detailed grading reports with confidence scores and
                 condition analysis in seconds.
               </p>
               <div className="space-y-2">
-                <Badge variant="outline" className="mr-2">
+                <Badge variant="outline" className="mr-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">
                   Real-time
                 </Badge>
-                <Badge variant="outline" className="mr-2">
+                <Badge variant="outline" className="mr-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">
                   Detailed Reports
                 </Badge>
-                <Badge variant="outline">Market Values</Badge>
+                <Badge variant="outline" className="border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300">Market Values</Badge>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* How It Works Section */}
-        <Card className="mb-12">
+        <Card className="mb-12 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-slate-200 dark:border-slate-700">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl mb-2">
+            <CardTitle className="text-2xl mb-2 text-slate-900 dark:text-white">
               How CoinGrader Works
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-slate-600 dark:text-slate-400">
               Our advanced AI system analyzes your coins in three simple steps
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Upload className="h-8 w-8 text-blue-600" />
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 border border-blue-200 dark:border-blue-700">
+                  <Upload className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="font-semibold mb-2">1. Upload Images</h3>
-                <p className="text-slate-600 text-sm">
+                <h3 className="font-semibold mb-2 text-slate-900 dark:text-white">1. Upload Images</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">
                   Upload clear photos of both sides of your coin in good
                   lighting
                 </p>
               </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <BarChart3 className="h-8 w-8 text-purple-600" />
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 border border-purple-200 dark:border-purple-700">
+                  <BarChart3 className="h-8 w-8 text-purple-600 dark:text-purple-400" />
                 </div>
-                <h3 className="font-semibold mb-2">2. AI Analysis</h3>
-                <p className="text-slate-600 text-sm">
+                <h3 className="font-semibold mb-2 text-slate-900 dark:text-white">2. AI Analysis</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">
                   Our AI examines surface quality, strike sharpness, and overall
                   condition
                 </p>
               </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Award className="h-8 w-8 text-green-600" />
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 border border-green-200 dark:border-green-700">
+                  <Trophy className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="font-semibold mb-2">3. Get Results</h3>
-                <p className="text-slate-600 text-sm">
+                <h3 className="font-semibold mb-2 text-slate-900 dark:text-white">3. Get Results</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">
                   Receive professional grade, confidence score, and market value
                   estimate
                 </p>
@@ -538,10 +620,10 @@ export default function Home() {
         </Card>
 
         {/* Supported Coin Types */}
-        <Card className="mb-12">
+        <Card className="mb-12 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-slate-200 dark:border-slate-700">
           <CardHeader>
-            <CardTitle className="text-xl">Supported Coin Types</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-xl text-slate-900 dark:text-white">Supported Coin Types</CardTitle>
+            <CardDescription className="text-slate-600 dark:text-slate-400">
               We can grade a wide variety of coins from different countries and
               time periods
             </CardDescription>
@@ -560,10 +642,10 @@ export default function Home() {
               ].map((type) => (
                 <div
                   key={type}
-                  className="text-center p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors"
+                  className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600/50 transition-all duration-300 border border-slate-200 dark:border-slate-600 hover:scale-105 hover:shadow-md group"
                 >
-                  <ImageIcon className="h-8 w-8 mx-auto mb-2 text-slate-400" />
-                  <div className="font-medium text-sm">{type}</div>
+                  <ImageIcon className="h-8 w-8 mx-auto mb-2 text-slate-400 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" />
+                  <div className="font-medium text-sm text-slate-700 dark:text-slate-300">{type}</div>
                 </div>
               ))}
             </div>
@@ -571,22 +653,22 @@ export default function Home() {
         </Card>
 
         {/* Enhanced Footer */}
-        <footer className="text-center py-12 border-t border-slate-200">
+        <footer className="text-center py-12 border-t border-slate-200 dark:border-slate-700 bg-white/30 dark:bg-slate-800/30 backdrop-blur-sm rounded-t-lg">
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               <div>
-                <h3 className="font-semibold mb-3 flex items-center justify-center gap-2">
-                  <Award className="h-5 w-5 text-blue-600" />
+                <h3 className="font-semibold mb-3 flex items-center justify-center gap-2 text-slate-900 dark:text-white">
+                  <Award className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   CoinGrader
                 </h3>
-                <p className="text-slate-600 text-sm">
+                <p className="text-slate-600 dark:text-slate-400 text-sm">
                   Professional AI-powered coin grading technology for collectors
                   and dealers worldwide.
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">Features</h4>
-                <ul className="text-slate-600 text-sm space-y-1">
+                <h4 className="font-semibold mb-3 text-slate-900 dark:text-white">Features</h4>
+                <ul className="text-slate-600 dark:text-slate-400 text-sm space-y-1">
                   <li>• AI-Powered Analysis</li>
                   <li>• Professional Standards</li>
                   <li>• Instant Results</li>
@@ -594,25 +676,25 @@ export default function Home() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">Accuracy</h4>
+                <h4 className="font-semibold mb-3 text-slate-900 dark:text-white">Accuracy</h4>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Grade Accuracy:</span>
-                    <span className="font-semibold text-green-600">98%</span>
+                    <span className="text-slate-600 dark:text-slate-400">Grade Accuracy:</span>
+                    <span className="font-semibold text-green-600 dark:text-green-400">98%</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>Confidence Score:</span>
-                    <span className="font-semibold text-blue-600">95%+</span>
+                    <span className="text-slate-600 dark:text-slate-400">Confidence Score:</span>
+                    <span className="font-semibold text-blue-600 dark:text-blue-400">95%+</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="pt-6 border-t border-slate-100">
-              <p className="text-slate-500 text-sm">
+            <div className="pt-6 border-t border-slate-100 dark:border-slate-700">
+              <p className="text-slate-500 dark:text-slate-400 text-sm">
                 &copy; 2025 CoinGrader. Professional coin grading powered by AI
                 technology.
               </p>
-              <p className="text-slate-400 text-xs mt-2">
+              <p className="text-slate-400 dark:text-slate-500 text-xs mt-2">
                 Disclaimer: AI grading is for reference purposes. Professional
                 certification recommended for valuable coins.
               </p>
