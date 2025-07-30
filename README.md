@@ -1,36 +1,171 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🪙 CoinGrader - AI-Powered Coin Grading
 
-## Getting Started
+CoinGrader is a professional coin grading website that uses Google's Gemini AI to analyze and grade coin images. Upload photos of your coins and get instant, professional-quality grading results with detailed analysis.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **🤖 AI-Powered Analysis**: Advanced computer vision using Google Gemini AI
+- **🎯 Professional Standards**: Grades following industry-standard scales (Sheldon, PCGS, NGC)
+- **⚡ Instant Results**: Get detailed grading reports in seconds
+- **🌙 Dark Mode**: Beautiful dark/light theme toggle
+- **📱 Responsive Design**: Works perfectly on desktop and mobile
+- **📊 Detailed Analysis**: Comprehensive breakdown of surface, strike, luster, and eye appeal
+- **💰 Market Valuations**: Estimated value ranges and rarity assessments
+- **🔒 Secure**: No coin images are stored - analysis happens in real-time
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ installed
+- A Google AI Studio account for Gemini API key
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/PragTheDev/coingrader.git
+   cd coingrader
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+   Edit `.env.local` and add your Gemini API key:
+
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+4. **Get your Gemini API key**
+
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Create a new API key
+   - Copy the key to your `.env.local` file
+
+5. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+6. **Open your browser**
+   - Navigate to [http://localhost:3000](http://localhost:3000)
+   - Start grading your coins!
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **AI**: Google Gemini API (@google/generative-ai)
+- **Icons**: Lucide React
+- **Language**: JavaScript (ES6+)
+
+## 📸 How to Use
+
+1. **Upload Images**: Click to upload clear photos of both sides of your coin
+2. **Optional Details**: Add coin type and additional details for better analysis
+3. **AI Analysis**: Click "Grade My Coin with Gemini AI" to start analysis
+4. **View Results**: Get comprehensive grading results in multiple tabs:
+   - **Overview**: Grade, confidence score, and certification recommendation
+   - **Details**: Surface condition, strike quality, luster, and eye appeal
+   - **Market Info**: Estimated value and rarity assessment
+   - **AI Notes**: Detailed analysis notes from Gemini AI
+
+## 🎨 UI Components
+
+Built with [shadcn/ui](https://ui.shadcn.com/) components:
+
+- Cards, Buttons, Inputs, Labels
+- Tabs, Progress bars, Badges
+- Alerts, Select dropdowns
+- Dark mode support
+
+## 📝 Grading Standards
+
+CoinGrader follows professional numismatic grading standards:
+
+- **Sheldon Scale** (MS-70 to PO-01)
+- **PCGS Standards**
+- **NGC Compatible** grading
+- **European Standards** for world coins
+
+## 🔧 API Endpoints
+
+### POST `/api/grade-coin`
+
+Analyze coin images using Gemini AI.
+
+**Request Body:**
+
+```json
+{
+  "obverseImage": "data:image/jpeg;base64,...",
+  "reverseImage": "data:image/jpeg;base64,...",
+  "coinDetails": "Optional details",
+  "coinType": "quarter"
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Response:**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```json
+{
+  "overallGrade": "MS-65",
+  "gradeScore": 85,
+  "confidence": 92,
+  "details": {
+    "surface": "Excellent",
+    "strike": "Sharp",
+    "luster": "Outstanding",
+    "eyeAppeal": "Attractive"
+  },
+  "marketValue": "$145 - $175",
+  "rarity": "Common",
+  "certificationRecommendation": "Recommended for certification",
+  "gradingNotes": "Detailed AI analysis..."
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌟 Supported Coin Types
 
-## Learn More
+- US Coins (pennies, nickels, dimes, quarters, etc.)
+- World Coins (international currencies)
+- Ancient Coins (historical pieces)
+- Commemoratives (special edition coins)
+- Gold, Silver, and Copper coins
+- Modern Issues
 
-To learn more about Next.js, take a look at the following resources:
+## 🤝 Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📄 License
 
-## Deploy on Vercel
+This project is licensed under the MIT License.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ⚠️ Disclaimer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+AI grading is for reference purposes only. Professional certification by recognized grading services (PCGS, NGC, ANACS) is recommended for valuable coins. Market values are estimates and may vary based on market conditions.
+
+## 🆘 Support
+
+If you encounter any issues:
+
+1. Check that your Gemini API key is correctly configured
+2. Ensure images are in supported formats (JPEG, PNG)
+3. Verify your internet connection for API calls
+
+---
+
+**Built with ❤️ by PragTheDev using Next.js and Google Gemini AI**
