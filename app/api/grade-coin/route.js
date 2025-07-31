@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 export async function POST(request) {
   try {
     const body = await request.json();
-    
+
     // Handle API key check request
     if (body.checkApiKey) {
       if (!process.env.GEMINI_API_KEY) {
@@ -147,7 +147,7 @@ Respond only with valid JSON.`;
     return NextResponse.json(gradingResult);
   } catch (error) {
     console.error("Error in coin grading API:", error);
-    
+
     // Check if it's an API key issue
     if (error.message && error.message.includes("API_KEY")) {
       return NextResponse.json(
@@ -155,7 +155,7 @@ Respond only with valid JSON.`;
         { status: 401 }
       );
     }
-    
+
     // Check if it's a quota issue
     if (error.message && error.message.includes("quota")) {
       return NextResponse.json(
@@ -163,7 +163,7 @@ Respond only with valid JSON.`;
         { status: 429 }
       );
     }
-    
+
     return NextResponse.json(
       { error: `Failed to grade coin: ${error.message || "Unknown error"}` },
       { status: 500 }
