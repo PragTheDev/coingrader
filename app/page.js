@@ -128,7 +128,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       {/* Navbar */}
       <Navbar
         savedCoinsCount={savedCoinsCount}
@@ -138,7 +138,7 @@ export default function Home() {
       />
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
         {/* Show Saved Coins Section */}
         {showSavedCoins && (
           <SavedCoinsSection
@@ -151,7 +151,7 @@ export default function Home() {
 
         {/* Show Main App Content */}
         {!showSavedCoins && (
-          <>
+          <div className="space-y-16">
             {/* Header Section */}
             <Header />
 
@@ -194,7 +194,7 @@ export default function Home() {
 
             {/* Footer */}
             <Footer />
-          </>
+          </div>
         )}
       </main>
     </div>

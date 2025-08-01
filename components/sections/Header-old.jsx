@@ -87,3 +87,62 @@ export default function Header() {
     </section>
   );
 }
+              Coins Graded
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="card-hover glass bg-gradient-to-br from-green-50/80 to-green-100/80 dark:from-green-900/30 dark:to-green-800/30 border-green-200/50 dark:border-green-700/50 shadow-xl hover:shadow-2xl">
+          <CardContent className="p-6 text-center">
+            <div className="relative mb-4">
+              <div className="absolute inset-0 bg-green-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
+              <Target
+                className="relative h-8 w-8 mx-auto text-green-600 dark:text-green-400 animate-float"
+                style={{ animationDelay: "0.5s" }}
+              />
+            </div>
+            <div className="text-3xl font-black text-green-600 dark:text-green-400 mb-2">
+              98%
+            </div>
+            <div className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              Accuracy Rate
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="card-hover glass bg-gradient-to-br from-purple-50/80 to-purple-100/80 dark:from-purple-900/30 dark:to-purple-800/30 border-purple-200/50 dark:border-purple-700/50 shadow-xl hover:shadow-2xl">
+          <CardContent className="p-6 text-center">
+            <div className="relative mb-4">
+              <div className="absolute inset-0 bg-purple-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
+              <Zap
+                className="relative h-8 w-8 mx-auto text-purple-600 dark:text-purple-400 animate-float"
+                style={{ animationDelay: "1s" }}
+              />
+            </div>
+            <div className="text-3xl font-black text-purple-600 dark:text-purple-400 mb-2">
+              2.5s
+            </div>
+            <div className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              Avg. Analysis Time
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="card-hover glass bg-gradient-to-br from-orange-50/80 to-orange-100/80 dark:from-orange-900/30 dark:to-orange-800/30 border-orange-200/50 dark:border-orange-700/50 shadow-xl hover:shadow-2xl">
+          <CardContent className="p-6 text-center">
+            <div className="relative mb-4">
+              <div className="absolute inset-0 bg-orange-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
+              <Clock
+                className="relative h-8 w-8 mx-auto text-orange-600 dark:text-orange-400 animate-float"
+                style={{ animationDelay: "1.5s" }}
+              />
+            </div>
+            <div className="text-3xl font-black text-orange-600 dark:text-orange-400 mb-2">
+              24/7
+            </div>
+            <div className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              Available
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </header>
+  );
+}

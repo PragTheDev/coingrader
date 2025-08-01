@@ -1,33 +1,35 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
 export function useDarkMode() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Update body class for dark mode
   const updateBodyClass = useCallback((isDark) => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    if (typeof window !== 'undefined') {
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
     }
   }, []);
 
   // Initialize dark mode from localStorage or system preference
   useEffect(() => {
-    const savedMode = localStorage.getItem("coinGraderDarkMode");
-    if (savedMode !== null) {
-      const isDark = JSON.parse(savedMode);
-      setIsDarkMode(isDark);
-      updateBodyClass(isDark);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      setIsDarkMode(prefersDark);
-      updateBodyClass(prefersDark);
+    if (typeof window !== 'undefined') {
+      const savedMode = localStorage.getItem('coinGraderDarkMode');
+      if (savedMode !== null) {
+        const isDark = JSON.parse(savedMode);
+        setIsDarkMode(isDark);
+        updateBodyClass(isDark);
+      } else {
+        // Check system preference
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setIsDarkMode(prefersDark);
+        updateBodyClass(prefersDark);
+      }
     }
   }, [updateBodyClass]);
 
@@ -36,18 +38,19 @@ export function useDarkMode() {
     const newMode = !isDarkMode;
     setIsDarkMode(newMode);
     updateBodyClass(newMode);
-    localStorage.setItem("coinGraderDarkMode", JSON.stringify(newMode));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('coinGraderDarkMode', JSON.stringify(newMode));
+    }
   }, [isDarkMode, updateBodyClass]);
 
   // Set specific mode
-  const setDarkMode = useCallback(
-    (mode) => {
-      setIsDarkMode(mode);
-      updateBodyClass(mode);
-      localStorage.setItem("coinGraderDarkMode", JSON.stringify(mode));
-    },
-    [updateBodyClass]
-  );
+  const setDarkMode = useCallback((mode) => {
+    setIsDarkMode(mode);
+    updateBodyClass(mode);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('coinGraderDarkMode', JSON.stringify(mode));
+    }
+  }, [updateBodyClass]);
 
   return {
     isDarkMode,
