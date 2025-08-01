@@ -10,17 +10,14 @@ CoinGrader is a professional coin grading website that uses Google's Gemini AI t
 
 ### 🎥 Demo Video
 
-![CoinGrader Demo](./docs/media/demo.gif)
+![CoinGrader Demo](./coingrader_demo.mov)
 
 ### 📸 Screenshots
 
 <div align="center">
 
 **Main Interface**
-![Main Interface](./docs/media/screenshot-main.png)
-
-**AI Grading Results**
-![Grading Results](./docs/media/screenshot-results.png)
+![Main Interface](./coingrader_darkmode.png)
 
 </div>
 
