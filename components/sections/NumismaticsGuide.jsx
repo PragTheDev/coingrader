@@ -117,8 +117,9 @@ export default function NumismaticsGuide() {
           </h2>
         </div>
         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed">
-          Numismatics is the study and collection of coins, paper money, and related objects. 
-          Professional coin grading determines a coin's condition and market value using standardized criteria.
+          Numismatics is the study and collection of coins, paper money, and
+          related objects. Professional coin grading determines a coin's
+          condition and market value using standardized criteria.
         </p>
       </div>
 
@@ -132,8 +133,9 @@ export default function NumismaticsGuide() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-slate-700 dark:text-slate-300 text-lg leading-relaxed">
-            Numismatics encompasses the systematic study of coins, tokens, paper money, and medals. 
-            It involves examining their historical context, artistic merit, production methods, and cultural significance.
+            Numismatics encompasses the systematic study of coins, tokens, paper
+            money, and medals. It involves examining their historical context,
+            artistic merit, production methods, and cultural significance.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-3">
@@ -142,7 +144,8 @@ export default function NumismaticsGuide() {
                 Historical Research
               </h4>
               <p className="text-slate-600 dark:text-slate-400">
-                Understanding the historical period, mint marks, production quantities, and historical significance of coins.
+                Understanding the historical period, mint marks, production
+                quantities, and historical significance of coins.
               </p>
             </div>
             <div className="space-y-3">
@@ -151,7 +154,8 @@ export default function NumismaticsGuide() {
                 Market Analysis
               </h4>
               <p className="text-slate-600 dark:text-slate-400">
-                Evaluating rarity, collector demand, market trends, and investment potential of numismatic items.
+                Evaluating rarity, collector demand, market trends, and
+                investment potential of numismatic items.
               </p>
             </div>
           </div>
@@ -166,14 +170,16 @@ export default function NumismaticsGuide() {
             Professional Coin Grading
           </CardTitle>
           <CardDescription className="text-lg text-slate-600 dark:text-slate-400">
-            Coin grading is the process of determining a coin's condition and assigning it a numerical grade that affects its value.
+            Coin grading is the process of determining a coin's condition and
+            assigning it a numerical grade that affects its value.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-            The Sheldon Grading Scale, developed by Dr. William Sheldon in 1949, uses a 70-point scale 
-            where 70 represents a perfect coin and 1 represents a barely identifiable coin. This system 
-            is universally accepted by collectors, dealers, and certification services.
+            The Sheldon Grading Scale, developed by Dr. William Sheldon in 1949,
+            uses a 70-point scale where 70 represents a perfect coin and 1
+            represents a barely identifiable coin. This system is universally
+            accepted by collectors, dealers, and certification services.
           </p>
 
           {/* Grading Factors */}
@@ -213,7 +219,8 @@ export default function NumismaticsGuide() {
             Sheldon Grading Scale
           </CardTitle>
           <CardDescription className="text-lg text-purple-700 dark:text-purple-300">
-            Understanding the 70-point grading scale used by professional certification services.
+            Understanding the 70-point grading scale used by professional
+            certification services.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -223,7 +230,9 @@ export default function NumismaticsGuide() {
                 key={index}
                 className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-white to-slate-50 dark:from-slate-700 dark:to-slate-600 border border-slate-200 dark:border-slate-600 hover:shadow-lg transition-all duration-300"
               >
-                <Badge className={`${scale.color} text-white font-bold px-3 py-1 min-w-[60px] justify-center`}>
+                <Badge
+                  className={`${scale.color} text-white font-bold px-3 py-1 min-w-[60px] justify-center`}
+                >
                   {scale.range}
                 </Badge>
                 <div className="flex-1">
@@ -263,7 +272,8 @@ export default function NumismaticsGuide() {
                 Authentication
               </h4>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Professional grading services authenticate coins and detect counterfeits using advanced techniques.
+                Professional grading services authenticate coins and detect
+                counterfeits using advanced techniques.
               </p>
             </div>
             <div className="text-center space-y-3">
@@ -274,7 +284,8 @@ export default function NumismaticsGuide() {
                 Market Value
               </h4>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Graded coins have established market values, making buying, selling, and insurance easier.
+                Graded coins have established market values, making buying,
+                selling, and insurance easier.
               </p>
             </div>
             <div className="text-center space-y-3">
@@ -285,7 +296,8 @@ export default function NumismaticsGuide() {
                 Standardization
               </h4>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Consistent grading standards allow collectors worldwide to communicate effectively.
+                Consistent grading standards allow collectors worldwide to
+                communicate effectively.
               </p>
             </div>
           </div>

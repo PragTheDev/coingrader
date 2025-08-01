@@ -20,13 +20,13 @@ export function useCoinGrading() {
         const img = new Image();
         img.onload = () => {
           // Create canvas to resize and compress the image
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
           // Calculate new dimensions (max 1024px on longest side)
           const maxSize = 1024;
           let { width, height } = img;
-          
+
           if (width > height) {
             if (width > maxSize) {
               height = (height * maxSize) / width;
@@ -38,15 +38,15 @@ export function useCoinGrading() {
               height = maxSize;
             }
           }
-          
+
           // Set canvas dimensions and draw resized image
           canvas.width = width;
           canvas.height = height;
           ctx.drawImage(img, 0, 0, width, height);
-          
+
           // Convert to compressed base64 (JPEG with 0.8 quality)
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.8);
+
           if (side === "obverse") {
             setObverseImage(file);
             setObversePreview(compressedDataUrl);
@@ -111,7 +111,9 @@ export function useCoinGrading() {
 
       if (!response.ok) {
         if (response.status === 413) {
-          throw new Error("Image files are too large. Please use smaller images (under 5MB each).");
+          throw new Error(
+            "Image files are too large. Please use smaller images (under 5MB each)."
+          );
         }
         throw new Error(`API error: ${response.status}`);
       }

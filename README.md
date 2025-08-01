@@ -2,6 +2,30 @@
 
 CoinGrader is a professional coin grading website that uses Google's Gemini AI to analyze and grade coin images. Upload photos of your coins and get instant, professional-quality grading results with detailed analysis.
 
+## 📱 Demo
+
+### � Live Website
+
+**[Try CoinGrader Live →](https://your-vercel-deployment-url.vercel.app)**
+
+### 🎥 Demo Video
+
+![CoinGrader Demo](./docs/media/demo.gif)
+
+### 📸 Screenshots
+
+<div align="center">
+
+**Main Interface**
+![Main Interface](./docs/media/screenshot-main.png)
+
+**AI Grading Results**
+![Grading Results](./docs/media/screenshot-results.png)
+
+</div>
+
+---
+
 ## ✨ Features
 
 - **🤖 AI-Powered Analysis**: Advanced computer vision using Google Gemini AI
