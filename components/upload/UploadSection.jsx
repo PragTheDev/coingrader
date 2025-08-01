@@ -194,13 +194,9 @@ export default function UploadSection({
             </>
           ) : (
             <>
-              <div className="relative flex items-center justify-center gap-3">
-                <Sparkles className="h-6 w-6 animate-pulse" />
-                <span>Grade My Coin with Gemini AI</span>
-                <Sparkles
-                  className="h-6 w-6 animate-pulse"
-                  style={{ animationDelay: "0.5s" }}
-                />
+              <div className="relative flex items-center justify-center gap-2">
+                <Sparkles className="h-5 w-5" />
+                <span>Grade Coin</span>
               </div>
             </>
           )}
@@ -208,10 +204,7 @@ export default function UploadSection({
 
         {/* Enhanced Upload Tips */}
         <Alert className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border-blue-200 dark:border-blue-700 rounded-xl shadow-lg">
-          <div className="relative">
-            <div className="absolute inset-0 bg-blue-500 rounded-full blur-xl opacity-10 animate-pulse"></div>
-            <Info className="relative h-5 w-5 text-blue-600 dark:text-blue-400" />
-          </div>
+          <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           <AlertDescription className="text-blue-800 dark:text-blue-200 ml-2">
             <strong className="text-blue-900 dark:text-blue-100">
               Pro Tips:
@@ -225,10 +218,7 @@ export default function UploadSection({
         {/* Enhanced API Configuration Notice */}
         {!hasApiKey && (
           <Alert className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200 dark:border-amber-700 rounded-xl shadow-lg">
-            <div className="relative">
-              <div className="absolute inset-0 bg-amber-500 rounded-full blur-xl opacity-10 animate-pulse"></div>
-              <Sparkles className="relative h-5 w-5 text-amber-600 dark:text-amber-400" />
-            </div>
+            <Sparkles className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             <AlertDescription className="text-amber-800 dark:text-amber-200 ml-2">
               <strong className="text-amber-900 dark:text-amber-100">
                 Setup Required:
