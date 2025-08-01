@@ -86,7 +86,7 @@ export function useCoinGrading() {
   }, [obverseImage, reverseImage]);
 
   return {
-    // Images
+  
     obverseImage,
     reverseImage,
     obversePreview,

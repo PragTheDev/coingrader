@@ -16,13 +16,15 @@ export default function Header() {
             CoinGrader
           </h1>
         </div>
-        
+
         <h2 className="text-2xl md:text-3xl font-medium text-slate-600 dark:text-slate-300 mb-6">
           Professional AI-powered coin grading
         </h2>
-        
+
         <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          Upload your coin images and receive professional-grade analysis using advanced computer vision technology. Get accurate grading, market values, and detailed condition reports in seconds.
+          Upload your coin images and receive professional-grade analysis using
+          advanced computer vision technology. Get accurate grading, market
+          values, and detailed condition reports in seconds.
         </p>
       </div>
 
