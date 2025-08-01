@@ -15,6 +15,7 @@ import ResultsSection from "@/components/results/ResultsSection";
 import SavedCoinsSection from "@/components/saved-coins/SavedCoinsSection";
 import FeatureCards from "@/components/sections/FeatureCards";
 import HowItWorks from "@/components/sections/HowItWorks";
+import NumismaticsGuide from "@/components/sections/NumismaticsGuide";
 import SupportedCoinTypes from "@/components/sections/SupportedCoinTypes";
 import Footer from "@/components/sections/Footer";
 
@@ -207,6 +208,9 @@ export default function Home() {
 
             {/* How It Works */}
             <HowItWorks />
+
+            {/* Numismatics Guide */}
+            <NumismaticsGuide />
 
             {/* Supported Coin Types */}
             <SupportedCoinTypes />
