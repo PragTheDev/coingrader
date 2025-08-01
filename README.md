@@ -46,6 +46,8 @@ CoinGrader is a professional coin grading website that uses Google's Gemini AI t
 
 ### Installation
 
+(RECOMMENDED use the Website URL, but if you wish to run locally proceed!)
+
 1. **Clone the repository**
 
    ```bash
