@@ -56,37 +56,109 @@ export function useCoinGrading() {
 
     setIsAnalyzing(true);
 
-    // Simulate API call with realistic delay
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    try {
+      // Call the actual AI API
+      console.log("Calling AI API with data:", {
+        hasObverse: !!obversePreview,
+        hasReverse: !!reversePreview,
+        coinType: selectedCoinType,
+        coinDetails: coinDetails,
+      });
 
-    // Mock grading results
-    const mockResults = {
-      overallGrade: "MS-65",
-      confidence: Math.floor(Math.random() * 15) + 85,
-      marketValue: `$${(Math.random() * 500 + 50).toFixed(2)}`,
-      condition: "Excellent",
-      authenticity: "Verified Authentic",
-      rarity: "Common",
-      details: {
-        surface: Math.floor(Math.random() * 20) + 80,
-        strike: Math.floor(Math.random() * 20) + 80,
-        luster: Math.floor(Math.random() * 20) + 80,
-        eye_appeal: Math.floor(Math.random() * 20) + 80,
-      },
-      aiNotes:
-        "This coin shows excellent preservation with minimal wear. The strike is sharp and the surfaces are well-maintained. Some minor contact marks are present but do not significantly detract from the overall appeal.",
-      historicalInfo:
-        "This coin represents a significant period in numismatic history. The design elements are well-executed and the coin maintains its original mint characteristics.",
-      marketTrends:
-        "Current market conditions show stable demand for this grade. Recent sales indicate consistent pricing in the current range.",
-    };
+      const response = await fetch("/api/grade-coin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          obverseImage: obversePreview,
+          reverseImage: reversePreview,
+          coinType: selectedCoinType,
+          coinDetails: coinDetails,
+        }),
+      });
 
-    setGradingResults(mockResults);
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const aiResults = await response.json();
+      console.log("AI API Response:", aiResults);
+
+      // Convert AI results to match our expected format
+      const gradingResults = {
+        overallGrade: aiResults.overallGrade || "Unable to determine",
+        confidence: aiResults.confidence || 0,
+        marketValue: aiResults.marketValue || "Unable to determine",
+        condition: aiResults.details?.surface || "Unknown",
+        authenticity: "AI Analysis Complete",
+        rarity: aiResults.rarity || "Unknown",
+        details: {
+          surface: aiResults.details?.surface || 0,
+          strike: aiResults.details?.strike || 0,
+          luster: aiResults.details?.luster || 0,
+          eye_appeal: aiResults.details?.eyeAppeal || 0,
+        },
+        gradingNotes:
+          aiResults.gradingNotes || "AI analysis completed successfully.",
+        historicalInfo: `Coin Type: ${selectedCoinType || "Not specified"}. ${
+          coinDetails || ""
+        }`,
+        marketTrends: `Market Value: ${
+          aiResults.marketValue || "To be determined"
+        }. Rarity: ${aiResults.rarity || "Unknown"}.`,
+      };
+
+      console.log("Converted grading results:", gradingResults);
+      setGradingResults(gradingResults);
+
+      // Scroll to results section after a brief delay
+      setTimeout(() => {
+        const resultsSection = document.querySelector("[data-results-section]");
+        if (resultsSection) {
+          resultsSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }, 100);
+    } catch (error) {
+      console.error("Error analyzing coin:", error);
+
+      // Fallback to mock results if API fails
+      const mockResults = {
+        overallGrade: "API Error - Demo Mode",
+        confidence: 0,
+        marketValue: "API Unavailable",
+        condition: "Demo Mode",
+        authenticity: "API Error",
+        rarity: "Unknown",
+        details: {
+          surface: 0,
+          strike: 0,
+          luster: 0,
+          eye_appeal: 0,
+        },
+        gradingNotes: `API Error: ${error.message}. Please check your Gemini API key configuration.`,
+        historicalInfo:
+          "API connection failed. Please verify your API key in .env.local",
+        marketTrends: "API unavailable for market analysis.",
+      };
+
+      setGradingResults(mockResults);
+    }
+
     setIsAnalyzing(false);
-  }, [obverseImage, reverseImage]);
+  }, [
+    obverseImage,
+    reverseImage,
+    obversePreview,
+    reversePreview,
+    selectedCoinType,
+    coinDetails,
+  ]);
 
   return {
-  
     obverseImage,
     reverseImage,
     obversePreview,
@@ -105,6 +177,11 @@ export function useCoinGrading() {
     setSelectedCoinType,
     setCoinDetails,
     setActiveTab,
+    setGradingResults,
+    setObverseImage,
+    setReverseImage,
+    setObversePreview,
+    setReversePreview,
 
     // Actions
     handleImageUpload,

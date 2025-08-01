@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Import custom hooks
 import { useCoinGrading } from "@/hooks/useCoinGrading";
@@ -36,9 +36,15 @@ export default function Home() {
     setSelectedCoinType,
     setCoinDetails,
     setActiveTab,
+    setGradingResults,
+    setObverseImage,
+    setReverseImage,
+    setObversePreview,
+    setReversePreview,
     handleImageUpload,
     clearImage,
     clearAll,
+    analyzeCoin,
   } = useCoinGrading();
 
   const {
@@ -53,41 +59,33 @@ export default function Home() {
 
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
-  // Local state for animations and UI
-  const [progress, setProgress] = useState(0);
+  // State for API key availability
+  const [hasApiKey, setHasApiKey] = useState(false);
 
-  // Enhanced analyze coin function with progress simulation
-  const analyzeCoin = async () => {
-    if (!obverseImage && !reverseImage) return;
+  // Check API key on component mount
+  useEffect(() => {
+    const checkApiKey = async () => {
+      try {
+        const response = await fetch("/api/grade-coin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ checkApiKey: true }),
+        });
 
-    setProgress(0);
-
-    // Simulate analysis progress
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
+        if (response.ok) {
+          const data = await response.json();
+          setHasApiKey(data.hasApiKey || false);
         }
-        return prev + Math.random() * 15;
-      });
-    }, 200);
+      } catch (error) {
+        console.error("Error checking API key:", error);
+        setHasApiKey(false);
+      }
+    };
 
-    // Generate mock results using utility function
-    const results = generateMockGradingResults(selectedCoinType, coinDetails);
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    clearInterval(progressInterval);
-    setProgress(100);
-
-    // Update results in the coin grading hook
-    // Since we're using the hook, we need to trigger the analyze function from there
-    window.gradingResults = results;
-
-    setTimeout(() => setProgress(0), 1000);
-  };
+    checkApiKey();
+  }, []);
 
   // Save current coin data
   const handleSaveCoin = () => {
@@ -107,24 +105,44 @@ export default function Home() {
 
   // Load saved coin data
   const handleLoadSavedCoin = (coin) => {
-    loadSavedCoin(coin);
-
-    // Manually set the loaded data (in a real app, this would be handled by the hook)
+    // Set the coin type and details
     setSelectedCoinType(coin.selectedCoinType || "");
     setCoinDetails(coin.coinDetails || "");
 
-    // Set images
+    // Load the saved grading results directly
+    setGradingResults(coin.gradingResults);
+
+    // Load the image previews (these are already base64 data URLs from when they were saved)
     if (coin.obverseImage) {
-      const file = new File([""], "obverse.jpg", { type: "image/jpeg" });
-      handleImageUpload(file, "obverse");
+      // Create a fake file object and set the preview
+      const fakeFile = new File([""], "saved-obverse.jpg", {
+        type: "image/jpeg",
+      });
+      setObverseImage(fakeFile);
+      setObversePreview(coin.obverseImage);
     }
     if (coin.reverseImage) {
-      const file = new File([""], "reverse.jpg", { type: "image/jpeg" });
-      handleImageUpload(file, "reverse");
+      // Create a fake file object and set the preview
+      const fakeFile = new File([""], "saved-reverse.jpg", {
+        type: "image/jpeg",
+      });
+      setReverseImage(fakeFile);
+      setReversePreview(coin.reverseImage);
     }
 
-    // Set results
-    window.gradingResults = coin.gradingResults;
+    // Close the saved coins section to show the loaded coin
+    setShowSavedCoins(false);
+
+    // Scroll to results section to show the loaded results
+    setTimeout(() => {
+      const resultsSection = document.querySelector("[data-results-section]");
+      if (resultsSection) {
+        resultsSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 100);
   };
 
   return (
@@ -164,22 +182,23 @@ export default function Home() {
               selectedCoinType={selectedCoinType}
               coinDetails={coinDetails}
               isAnalyzing={isAnalyzing}
-              progress={progress}
               onImageUpload={handleImageUpload}
               onClearImage={clearImage}
               onSelectedCoinTypeChange={setSelectedCoinType}
               onCoinDetailsChange={setCoinDetails}
               onAnalyzeCoin={analyzeCoin}
+              hasApiKey={hasApiKey}
             />
 
             {/* Results Section */}
             {gradingResults && (
               <ResultsSection
                 gradingResults={gradingResults}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                onSaveCoin={handleSaveCoin}
-                onClearAll={clearAll}
+                saveCoin={handleSaveCoin}
+                clearAnalysis={clearAll}
+                savedCoins={savedCoins}
+                obverseImage={obversePreview}
+                reverseImage={reversePreview}
               />
             )}
 

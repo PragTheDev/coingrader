@@ -23,20 +23,25 @@ import { Upload, Camera, Clock, Sparkles, Info, Coins } from "lucide-react";
 import ImageUploadArea from "./ImageUploadArea";
 
 export default function UploadSection({
-  selectedCoinType,
-  setSelectedCoinType,
   obverseImage,
   reverseImage,
-  handleFileUpload,
+  obversePreview,
+  reversePreview,
+  selectedCoinType,
   coinDetails,
-  setCoinDetails,
   isAnalyzing,
-  analysisProgress,
-  gradeWithGemini,
-  hasApiKey,
+  onImageUpload,
+  onClearImage,
+  onSelectedCoinTypeChange,
+  onCoinDetailsChange,
+  onAnalyzeCoin,
+  hasApiKey = false, // Default to false if not provided
 }) {
   return (
-    <Card className="glass bg-gradient-to-br from-slate-50/80 via-white/80 to-slate-100/80 dark:from-slate-900/80 dark:via-slate-800/80 dark:to-slate-900/80 border-slate-200/50 dark:border-slate-700/50 shadow-2xl hover:shadow-3xl transition-all duration-500 card-hover">
+    <Card
+      data-upload-section
+      className="glass bg-gradient-to-br from-slate-50/80 via-white/80 to-slate-100/80 dark:from-slate-900/80 dark:via-slate-800/80 dark:to-slate-900/80 border-slate-200/50 dark:border-slate-700/50 shadow-2xl hover:shadow-3xl transition-all duration-500 card-hover"
+    >
       <CardHeader className="pb-6">
         <CardTitle className="flex items-center gap-3 text-slate-900 dark:text-white text-2xl font-black">
           <div className="relative">
@@ -60,7 +65,10 @@ export default function UploadSection({
             <Coins className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             Coin Type
           </Label>
-          <Select value={selectedCoinType} onValueChange={setSelectedCoinType}>
+          <Select
+            value={selectedCoinType}
+            onValueChange={onSelectedCoinTypeChange}
+          >
             <SelectTrigger className="bg-gradient-to-r from-white to-slate-50 dark:from-slate-700 dark:to-slate-600 border-slate-200 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 h-12 text-lg shadow-lg hover:shadow-xl">
               <SelectValue placeholder="Select coin type (optional)" />
             </SelectTrigger>
@@ -122,15 +130,15 @@ export default function UploadSection({
           <ImageUploadArea
             side="obverse"
             label="Obverse (Front)"
-            image={obverseImage}
-            handleFileUpload={handleFileUpload}
+            image={obversePreview}
+            handleFileUpload={onImageUpload}
             iconColor="green"
           />
           <ImageUploadArea
             side="reverse"
             label="Reverse (Back)"
-            image={reverseImage}
-            handleFileUpload={handleFileUpload}
+            image={reversePreview}
+            handleFileUpload={onImageUpload}
             iconColor="purple"
           />
         </div>
@@ -149,27 +157,20 @@ export default function UploadSection({
             placeholder="Enter any additional information about your coin (year, mint mark, denomination, special features, etc.)"
             className="resize-none bg-gradient-to-br from-white to-slate-50 dark:from-slate-700 dark:to-slate-600 border-slate-200 dark:border-slate-600 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all duration-300 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 rounded-xl p-4 shadow-lg hover:shadow-xl focus:shadow-cyan-500/20 min-h-[120px]"
             value={coinDetails}
-            onChange={(e) => setCoinDetails(e.target.value)}
+            onChange={(e) => onCoinDetailsChange(e.target.value)}
           />
         </div>
 
         {/* Enhanced Analysis Progress */}
         {isAnalyzing && (
           <div className="space-y-4 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl border border-blue-200 dark:border-blue-700">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-center">
               <span className="text-lg font-bold text-blue-700 dark:text-blue-300 flex items-center gap-2">
                 <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                 Analyzing your coin with AI...
               </span>
-              <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                {analysisProgress}%
-              </span>
             </div>
-            <Progress
-              value={analysisProgress}
-              className="w-full h-3 bg-blue-200 dark:bg-blue-800"
-            />
-            <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
+            <p className="text-sm text-blue-600 dark:text-blue-400 font-medium text-center">
               Our advanced AI is examining your coin&apos;s features, condition,
               and authenticity...
             </p>
@@ -180,7 +181,7 @@ export default function UploadSection({
         <Button
           className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-700 hover:via-purple-700 hover:to-cyan-700 text-white border-0 font-bold py-6 text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.02] disabled:scale-100 disabled:from-slate-400 disabled:to-slate-500 relative overflow-hidden group"
           size="lg"
-          onClick={gradeWithGemini}
+          onClick={onAnalyzeCoin}
           disabled={isAnalyzing || (!obverseImage && !reverseImage)}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>

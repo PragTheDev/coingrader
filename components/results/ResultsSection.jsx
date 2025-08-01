@@ -27,7 +27,10 @@ export default function ResultsSection({
   );
 
   return (
-    <Card className="glass bg-gradient-to-br from-white/80 via-slate-50/80 to-white/80 dark:from-slate-800/80 dark:via-slate-900/80 dark:to-slate-800/80 border-slate-200/50 dark:border-slate-700/50 shadow-2xl hover:shadow-3xl transition-all duration-500">
+    <Card
+      data-results-section
+      className="glass bg-gradient-to-br from-white/80 via-slate-50/80 to-white/80 dark:from-slate-800/80 dark:via-slate-900/80 dark:to-slate-800/80 border-slate-200/50 dark:border-slate-700/50 shadow-2xl hover:shadow-3xl transition-all duration-500"
+    >
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>

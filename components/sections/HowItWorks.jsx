@@ -134,7 +134,20 @@ export default function HowItWorks() {
         </p>
         <div className="relative inline-block">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-xl opacity-30 animate-pulse"></div>
-          <Badge className="relative bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold text-lg px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+          <Badge
+            className="relative bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold text-lg px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
+            onClick={() => {
+              const uploadSection = document.querySelector(
+                "[data-upload-section]"
+              );
+              if (uploadSection) {
+                uploadSection.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }
+            }}
+          >
             Start Grading Now
           </Badge>
         </div>

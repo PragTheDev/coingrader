@@ -21,11 +21,32 @@ export default function Header() {
           Professional AI-powered coin grading
         </h2>
 
-        <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
           Upload your coin images and receive professional-grade analysis using
           advanced computer vision technology. Get accurate grading, market
           values, and detailed condition reports in seconds.
         </p>
+
+        {/* Call to Action Button */}
+        <div className="relative inline-block">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-xl opacity-30 animate-pulse"></div>
+          <button
+            className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-700 hover:via-purple-700 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+            onClick={() => {
+              const uploadSection = document.querySelector(
+                "[data-upload-section]"
+              );
+              if (uploadSection) {
+                uploadSection.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }
+            }}
+          >
+            Start Grading Now
+          </button>
+        </div>
       </div>
 
       {/* Stats Grid */}
