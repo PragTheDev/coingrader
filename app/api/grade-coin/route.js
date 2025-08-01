@@ -6,6 +6,15 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export async function POST(request) {
   try {
+    // Check content length before processing
+    const contentLength = request.headers.get('content-length');
+    if (contentLength && parseInt(contentLength) > 10 * 1024 * 1024) { // 10MB limit
+      return NextResponse.json(
+        { error: "Request payload too large. Please use smaller images." },
+        { status: 413 }
+      );
+    }
+
     const body = await request.json();
 
     // Handle API key check request
@@ -74,16 +83,13 @@ Please provide your analysis in the following JSON format:
 - Eye appeal and overall aesthetic quality
 - Centering and planchet quality
 
-Respond only with valid JSON.`;
+Respond ONLY with valid JSON. Do not use markdown formatting or code blocks. Return pure JSON only.`;
 
     const imageParts = [];
 
     if (obverseImage) {
-      // Remove data URL prefix to get base64 data
-      const base64Data = obverseImage.replace(
-        /^data:image\/[a-z]+;base64,/,
-        ""
-      );
+      // Remove data URL prefix if present
+      const base64Data = obverseImage.replace(/^data:image\/[a-z]+;base64,/, "");
       imageParts.push({
         inlineData: {
           data: base64Data,
@@ -93,11 +99,8 @@ Respond only with valid JSON.`;
     }
 
     if (reverseImage) {
-      // Remove data URL prefix to get base64 data
-      const base64Data = reverseImage.replace(
-        /^data:image\/[a-z]+;base64,/,
-        ""
-      );
+      // Remove data URL prefix if present
+      const base64Data = reverseImage.replace(/^data:image\/[a-z]+;base64,/, "");
       imageParts.push({
         inlineData: {
           data: base64Data,
@@ -106,27 +109,33 @@ Respond only with valid JSON.`;
       });
     }
 
-    // Generate content with images
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = await result.response;
     const text = response.text();
 
-    // Parse the JSON response
-    let gradingResult;
-    try {
-      // Clean the response text to extract JSON
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        gradingResult = JSON.parse(jsonMatch[0]);
-      } else {
-        throw new Error("No valid JSON found in response");
-      }
-    } catch (parseError) {
-      console.error("Error parsing Gemini response:", parseError);
-      console.error("Raw response:", text);
+    console.log("Raw AI response:", text);
 
-      // Fallback response if parsing fails
-      gradingResult = {
+    try {
+      // Clean the response text to handle markdown code blocks
+      let cleanedText = text.trim();
+      
+      // Remove markdown code block markers if present
+      if (cleanedText.startsWith('```json')) {
+        cleanedText = cleanedText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+      } else if (cleanedText.startsWith('```')) {
+        cleanedText = cleanedText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+      }
+      
+      // Try to parse the cleaned JSON response
+      const jsonResponse = JSON.parse(cleanedText);
+      console.log("Parsed AI response:", jsonResponse);
+      return NextResponse.json(jsonResponse);
+    } catch (parseError) {
+      console.error("Error parsing AI response:", parseError);
+      console.log("Raw response that failed to parse:", text);
+
+      // Return a fallback response if JSON parsing fails
+      return NextResponse.json({
         overallGrade: "Unable to determine",
         gradeScore: 0,
         confidence: 0,
@@ -137,16 +146,29 @@ Respond only with valid JSON.`;
           eyeAppeal: "Analysis incomplete",
         },
         marketValue: "Unable to determine",
-        rarity: "Unknown",
-        certificationRecommendation: "Professional evaluation recommended",
-        gradingNotes:
-          "AI analysis encountered an error. Please try again or consult a professional numismatist.",
-      };
+        rarity: "Analysis incomplete",
+        certificationRecommendation: "Unable to assess",
+        gradingNotes: `AI response parsing failed. Raw response: ${text.substring(0, 500)}...`,
+      });
+    }
+  } catch (error) {
+    console.error("API Error:", error);
+
+    // Check if it's a payload too large error
+    if (error.message && error.message.includes("request entity too large")) {
+      return NextResponse.json(
+        { error: "Image files are too large. Please use smaller images." },
+        { status: 413 }
+      );
     }
 
-    return NextResponse.json(gradingResult);
-  } catch (error) {
-    console.error("Error in coin grading API:", error);
+    // Check if it's a JSON parsing error due to size
+    if (error instanceof SyntaxError) {
+      return NextResponse.json(
+        { error: "Request payload too large or malformed. Please use smaller images." },
+        { status: 413 }
+      );
+    }
 
     // Check if it's an API key issue
     if (error.message && error.message.includes("API_KEY")) {
