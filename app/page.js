@@ -64,6 +64,22 @@ export default function Home() {
   // Initialize background system
   const { currentBackground } = useBackground();
 
+  // Get background class for the main container
+  const getBackgroundClass = () => {
+    switch (currentBackground) {
+      case "stars":
+        return "bg-stars";
+      case "grid":
+        return "bg-grid";
+      case "waves":
+        return "bg-waves";
+      case "sparkles":
+        return "bg-sparkles";
+      default:
+        return "bg-default";
+    }
+  };
+
   // State for API key availability
   const [hasApiKey, setHasApiKey] = useState(false);
 
@@ -151,7 +167,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <div
+      className={`min-h-screen transition-colors duration-300 ${getBackgroundClass()}`}
+    >
       {/* Navbar */}
       <Navbar
         savedCoinsCount={savedCoinsCount}

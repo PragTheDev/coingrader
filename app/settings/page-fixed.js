@@ -93,13 +93,21 @@ export default function SettingsPage() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    // Apply background class to body
+    document.body.className = document.body.className.replace(/bg-\w+/g, "");
+    document.body.classList.add(`bg-${savedBackground}`);
   }, []);
 
   const handleBackgroundChange = (backgroundId) => {
     setSelectedBackground(backgroundId);
     localStorage.setItem("coingrader-background", backgroundId);
 
-    // Simple event dispatch
+    // Apply background class to body
+    document.body.className = document.body.className.replace(/bg-\w+/g, "");
+    document.body.classList.add(`bg-${backgroundId}`);
+
+    // Trigger a custom event to notify other components
     window.dispatchEvent(
       new CustomEvent("backgroundChanged", {
         detail: { background: backgroundId },
@@ -117,6 +125,7 @@ export default function SettingsPage() {
       document.documentElement.classList.remove("dark");
     }
 
+    // Trigger a custom event to notify other components
     window.dispatchEvent(
       new CustomEvent("themeChanged", {
         detail: { theme: theme },
@@ -124,26 +133,8 @@ export default function SettingsPage() {
     );
   };
 
-  // Get current background class for the container
-  const getBackgroundClass = () => {
-    switch (selectedBackground) {
-      case "stars":
-        return "bg-stars";
-      case "grid":
-        return "bg-grid";
-      case "waves":
-        return "bg-waves";
-      case "sparkles":
-        return "bg-sparkles";
-      default:
-        return "bg-default";
-    }
-  };
-
   return (
-    <div
-      className={`min-h-screen transition-colors duration-300 ${getBackgroundClass()}`}
-    >
+    <div className="min-h-screen transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-4xl">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
@@ -299,18 +290,7 @@ export default function SettingsPage() {
                   setSelectedBackground("default");
                   setIsDarkMode(false);
                   document.documentElement.classList.remove("dark");
-
-                  // Dispatch events to notify other components
-                  window.dispatchEvent(
-                    new CustomEvent("backgroundChanged", {
-                      detail: { background: "default" },
-                    })
-                  );
-                  window.dispatchEvent(
-                    new CustomEvent("themeChanged", {
-                      detail: { theme: "light" },
-                    })
-                  );
+                  handleBackgroundChange("default");
                 }}
                 className="text-slate-700 dark:text-slate-300 glass"
               >
