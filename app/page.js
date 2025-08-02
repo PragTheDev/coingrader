@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useCoinGrading } from "@/hooks/useCoinGrading";
 import { useSavedCoins } from "@/hooks/useSavedCoins";
 import { useDarkMode } from "@/hooks/useDarkMode";
+import { useBackground } from "@/hooks/useBackground";
 
 // Import components
 import Navbar from "@/components/navigation/Navbar";
@@ -59,6 +60,9 @@ export default function Home() {
   } = useSavedCoins();
 
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+
+  // Initialize background system
+  const { currentBackground } = useBackground();
 
   // State for API key availability
   const [hasApiKey, setHasApiKey] = useState(false);

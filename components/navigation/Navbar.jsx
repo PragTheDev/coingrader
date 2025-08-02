@@ -2,7 +2,8 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Award, Sparkles, Archive, Sun, Moon } from "lucide-react";
+import { Award, Sparkles, Archive, Sun, Moon, Settings } from "lucide-react";
+import Link from "next/link";
 
 export default function Navbar({
   darkMode,
@@ -43,6 +44,15 @@ export default function Navbar({
             </Badge>
           )}
         </Button>
+        <Link href="/settings">
+          <Button
+            variant="outline"
+            size="sm"
+            className="p-3 glass border-slate-200/50 dark:border-slate-700/50 hover:scale-110 transition-all duration-300 shadow-lg"
+          >
+            <Settings className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+          </Button>
+        </Link>
         <Button
           variant="outline"
           size="sm"
