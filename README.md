@@ -4,13 +4,13 @@ CoinGrader is a professional coin grading website that uses Google's Gemini AI t
 
 ## 📱 Demo
 
-### � Live Website
+### Live Website
 
 **[Try CoinGrader Live →](https://your-vercel-deployment-url.vercel.app)**
 
 ### 🎥 Demo Video
 
-![CoinGrader Demo](./coingrader_demo.mov)
+Watch the demo video here: https://drive.google.com/file/d/1NrI0q-QGl7eWxf1hH_CPQUcWOMmNYndd/view?usp=sharing
 
 ### 📸 Screenshots
 
